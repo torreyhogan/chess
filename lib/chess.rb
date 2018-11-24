@@ -6,16 +6,25 @@ class Game
 		@player = nil
 	end
 
-	def random_player
-		players = ["b", "w"]
-		players[rand(2)]
+# switch player color or pick random player to start
+	def switch_player
+		if @player == "b"
+			@player = "w"
+		elsif @player == "w"
+			@player = "b"
+		else
+			@players = ["b", "w"][rand(2)]
 	end
+
+	def move
 
 	def play
 		board = Board.new
-		board.display
 		pieces = ChessPieces.new 
-		all_pieces = pieces.all_pieces   
+		board.display
+		all_pieces = pieces.all_pieces
+		switch_player
+		move
 
 	end
 

@@ -13,6 +13,7 @@ class ChessPieces
 
 	def queen
 		queen_hash = {}
+		queen_hash["moves"] = []
 		queen_hash["symbol"] = {"w"=>"♕", "b"=>"♛"}
 		queen_hash
 	end

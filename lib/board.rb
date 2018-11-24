@@ -15,7 +15,6 @@ class Board
 	def display
 		pieces = ChessPieces.new 
 		all_pieces = pieces.all_pieces 
-		puts all_pieces 
 		@board.each do |row|
 			string = ""
 			row.each do |space|
