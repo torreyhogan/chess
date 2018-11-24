@@ -14,14 +14,15 @@ class Board
 
 	def display
 		pieces = ChessPieces.new 
-		all_pieces = pieces.all_pieces  
+		all_pieces = pieces.all_pieces 
+		puts all_pieces 
 		@board.each do |row|
 			string = ""
 			row.each do |space|
 				if space == "-"
 					string += "- "
-				elsif space.include?('k')
-					space.split!('')
+				else
+					space = space.split('')
 					color = space[0]
 					char = space[1]
 					symbol = all_pieces[char]["symbol"][color]
