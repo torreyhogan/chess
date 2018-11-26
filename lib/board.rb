@@ -15,8 +15,9 @@ class Board
 	def display
 		pieces = ChessPieces.new 
 		all_pieces = pieces.all_pieces 
+		count = 8
 		@board.each do |row|
-			string = ""
+			string = "#{count} "
 			row.each do |space|
 				if space == "-"
 					string += "- "
@@ -28,8 +29,37 @@ class Board
 					string += "#{symbol} "
 				end
 			end
+			count -= 1
 			puts string
 		end
+		puts "  a b c d e f g h"
 	end
+
+	def location(input,turn)
+	end
+
+	def what_here(input,turn)
+		s_to_i = {"a" => 0,"b" => 1,"c" => 2,"d" => 3,"e"=> 4,"f" => 5,"g" => 6,"h" => 7}
+		input_a = input.split('')
+		if input_a[0] =~ /[1-8]/ && input_a[1] =~ /[a-h]/
+			y = 8 - input_a[0].to_i
+			x = s_to_i[input_a[1]]
+		elsif input_a[1] =~ /[1-8]/ && input_a[0] =~ /[a-h]/
+			y = 8 - input_a[1].to_i
+			x = s_to_i[input_a[0]]
+		else
+			puts "Enter a valid entry"
+			return false
+		end
+		space = @board[y.to_i][x.to_i]
+
+		if turn == space.split('')[0]
+			return true
+		else 
+			puts "Select one of your pieces..."
+			return false
+		end
+	end
+
 
 end
