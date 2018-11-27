@@ -6,6 +6,7 @@ class Game
 	def initialize
 		@player = nil
 		@board = nil
+		@turns = 0
 	end
 
 # switch player color or pick random player to start
@@ -22,15 +23,18 @@ class Game
 
 
 
-	def move
+	def player_turn
 		puts "#{@player}\'s turn \n Enter location of piece"
-		valid_entry = false
-		until valid_entry
-			piece_loc = gets.chomp
-			valid_entry = @board.what_here(piece_loc,@player)
-		end
-		puts "thanks"
-			
+		@board.move(@player)
+		@turns += 1
+		# valid_entry = false
+		# until valid_entry
+		# 	piece_loc = gets.chomp
+		# 	valid_entry = @board.what_here(piece_loc,@player)
+		# end
+		# puts "thanks"
+		
+		# puts "Where would you like to "
 
 	end
 
@@ -39,8 +43,11 @@ class Game
 		@board = Board.new
 		@board.display
 		# all_pieces = pieces.all_pieces
-		switch_player
-		move
+		while true
+			switch_player
+			player_turn
+			@board.display
+		end
 
 	end
 

@@ -1,8 +1,8 @@
-RSpec.describe Calculator do
-	describe "#method" do
-		it "returns blah blay blah" do
-			new_class = Class.new
-			expect(new_class.add()).to eql(7)
+RSpec.describe Board do
+	describe "#what_here" do
+		it "retruns true if player chooses own piece" do
+			new_board = Board.new
+			expect(new_board.what_here("d7","b")).to eql(true)
 		end
 	end
 end
