@@ -24,7 +24,8 @@ class Game
 
 
 	def player_turn
-		puts "#{@player}\'s turn \n Enter location of piece"
+		@player == 'b' ? name = "Black" : name = "White"
+		puts "#{name}\'s turn"
 		@board.move(@player)
 		@turns += 1
 		# valid_entry = false

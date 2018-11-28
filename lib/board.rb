@@ -10,6 +10,14 @@ class Board
 							["-","-","-","-","-","-","-","-"],
 							["bp","bp","bp","bp","bp","bp","bp","bp"],
 							["br","bn","bb","bq","bk","bb","bn","br"]]
+		# @board = [["wr","wn","wb","wq","wk","wb","wn","wr"],
+		# 					["-","-","-","-","-","-","-","-"],
+		# 					["-","-","-","-","-","-","-","-"],
+		# 					["-","-","-","-","-","-","-","-"],
+		# 					["-","-","-","-","-","-","-","-"],
+		# 					["-","-","-","-","-","-","-","-"],
+		# 					["-","-","-","-","-","-","-","-"],
+		# 					["br","bn","bb","bq","bk","bb","bn","br"]]
 		@pieces = ChessPieces.new
 	end
 
@@ -69,10 +77,9 @@ class Board
 	end
 
 	def legal_move(current,player_move,move_delta)
-
 		if @pieces.legal_move(current_space_a[1],current_space_a[0],move_delta) && player_move_what[0] != current_space_a[0]
-				@board[player_move[1].to_i][player_move[0].to_i] = current_space
-				@board[current[1].to_i][current[0].to_i] = '-'
+				@board[player_move[1]][player_move[0]] = current_space
+				@board[current[1]][current[0]] = '-'
 				valid_piece_move = true
 			else 
 				puts "Enter valid move"
@@ -91,6 +98,7 @@ class Board
 		else
 			x_step = -1
 		end
+
 		if delta[1] == 0
 			y_step = 0
 		elsif delta[1] > 0
@@ -99,17 +107,43 @@ class Board
 			y_step = -1
 		end
 
-		x = current[0]
-		y = current[1]
+		x = current[0] 
+		y = current[1] 
+		x += x_step
+		y += y_step
 
 		until x == player_move[0] && y == player_move[1]
-			x += x_step
-			y += y_step
 			if @board[y][x] != "-"
 				return false
 			end
+			x += x_step
+			y += y_step
 		end
 		return true
+	end
+
+	def move_request()
+	end
+
+	def valid_request()
+		player_move_what = @board.dup[player_move[1].to_i][player_move[0].to_i]
+		move_delta = [player_move[0].to_i - current[0].to_i, player_move[1].to_i - current[1].to_i]
+		#check for valid move
+		all_pieces = @pieces.all_pieces
+
+		current_space = @board[current[1].to_i][current[0].to_i]
+		current_space_a = current_space.split('')
+
+		if @pieces.legal_move(current_space_a[1],current_space_a[0],move_delta,current,player_move_what) && 
+			player_move_what[0] != current_space_a[0] && 
+			no_obstruction(current,player_move,move_delta,current_space_a)
+
+			@board[player_move[1].to_i][player_move[0].to_i] = @board.dup[current[1].to_i][current[0].to_i]
+			@board[current[1].to_i][current[0].to_i] = '-'
+			return true
+		else 
+			puts "Enter valid move"
+		end
 
 	end
 
@@ -118,43 +152,42 @@ class Board
 		player_move = false
 		while player_move == false || valid_piece_move == false
 			user_input = gets.chomp
+			if user_input == "back"
+				return false
+			end
 			player_move = input_translate(user_input)
-			player_move_what = @board[player_move[1].to_i][player_move[0].to_i]
-			move_delta = [player_move[0].to_i - current[0].to_i, player_move[1].to_i - current[1].to_i]
-			#check for valid move
-			all_pieces = @pieces.all_pieces
+			if player_move != false
+				player_move_what = @board.dup[player_move[1].to_i][player_move[0].to_i]
+				move_delta = [player_move[0].to_i - current[0].to_i, player_move[1].to_i - current[1].to_i]
+				#check for valid move
+				all_pieces = @pieces.all_pieces
 
-			current_space = @board[current[1].to_i][current[0].to_i]
-			current_space_a = current_space.split('')
-			
-			#legal move check
-			# legal_move(current,player_move,move_delta)
-			if @pieces.legal_move(current_space_a[1],current_space_a[0],move_delta) && player_move_what[0] != current_space_a[0] && \
-				no_obstruction(current,player_move,move_delta,current_space_a)
-				@board[player_move[1].to_i][player_move[0].to_i] = current_space
-				@board[current[1].to_i][current[0].to_i] = '-'
-				valid_piece_move = true
-			else 
-				puts "Enter valid move"
+				current_space = @board[current[1].to_i][current[0].to_i]
+				current_space_a = current_space.split('')
+
+				if @pieces.legal_move(current_space_a[1],current_space_a[0],move_delta,current,player_move_what) && 
+					player_move_what[0] != current_space_a[0] && 
+					no_obstruction(current,player_move,move_delta,current_space_a)
+
+					@board[player_move[1].to_i][player_move[0].to_i] = @board.dup[current[1].to_i][current[0].to_i]
+					@board[current[1].to_i][current[0].to_i] = '-'
+					return true
+				else 
+					puts "Enter valid move"
+				end
 			end
 		end
-
 	end
 
 	def move(turn)
 		valid_entry = false
-		while valid_entry == false
+		valid_move = false
+		until valid_entry && valid_move
+			puts "Enter the location of the piece you would like to move"
 			piece_loc = gets.chomp
 			valid_entry = what_here(piece_loc,turn)
+			puts "Select where to move \'#{@board[valid_entry[1]][valid_entry[0]]}\' "
+			valid_move = what_move(valid_entry)
 		end
-		puts "Select where to move \'#{@board[valid_entry[1]][valid_entry[0]]}\' "
-		# valid_move = false
-		# while valid_move == false
-			what_move(valid_entry)
-		# end
-
-
 	end
-
-
 end

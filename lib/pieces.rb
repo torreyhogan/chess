@@ -39,7 +39,7 @@ class ChessPieces
 
 	def pawn
 		pawn_hash = {}
-		pawn_hash["moves"] = {"w"=> {"first" => [[0,-2],[0,-1]], "second"=>[0,-1]}, "b" => {"first" => [[0,2],[0,1]], "second"=>[0,1]}}
+		pawn_hash["moves"] = {"b"=> {"first" => [[0,-2],[0,-1]], "second"=>[0,-1], "attack" => [[-1,-1],[1,-1]]}, "w" => {"first" => [[0,2],[0,1]], "second"=>[0,1], "attack" => [[-1,1],[1,1]]}}
 		pawn_hash["symbol"] = {"w"=>"♙", "b"=>"♟"}
 		pawn_hash
 	end
@@ -48,7 +48,7 @@ class ChessPieces
 		all_pieces = {"k"=> king,"q"=> queen,"b"=> bishop,"n"=> knight,"r"=> rook,"p"=>pawn}
 	end
 
-	def legal_move(piece,color,delta)
+	def legal_move(piece,color,delta,current,target)
 		pieces = all_pieces
 		case piece
 		when "k"
@@ -62,15 +62,28 @@ class ChessPieces
 		when "r"
 			delta[0] == 0 || delta[1] == 0
 		when "p"
-
+			pawn_move(piece,color,delta,current,pieces,target)
 		end
 
 	end
 
-	def pawn_move
-
+	def pawn_move(piece,color,delta,current,pieces,target)
+		if target != '-' && color == "w"
+			pieces["p"]["moves"]["w"]["attack"].include?(delta)
+		elsif target != '-' && color = "b"
+			pieces["p"]["moves"]["b"]["attack"].include?(delta)
+		elsif color == "w" && current[1] == 1 && target == '-'
+			pieces["p"]["moves"]["w"]["first"].include?(delta)
+		elsif color == "w" && target == '-'
+			pieces["p"]["moves"]["w"]["second"].include?(delta)
+		elsif color == "b" && current[1] == 6 && target == '-'
+			pieces["p"]["moves"]["b"]["first"].include?(delta)
+		elsif color == "b" && target == '-'
+			pieces["p"]["moves"]["b"]["second"].include?(delta)
+		else
+			false
+		end
 	end
-
 
 
 
