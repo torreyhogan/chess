@@ -42,7 +42,7 @@ class Game
 		@board = Board.new
 		@board.display
 		# all_pieces = pieces.all_pieces
-		while true
+		until @board.win
 			switch_player
 			player_turn
 			@board.display

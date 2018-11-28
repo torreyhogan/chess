@@ -2,22 +2,22 @@ require_relative 'pieces.rb'
 
 class Board
 	def initialize()
-		@board = [["wr","wn","wb","wq","wk","wb","wn","wr"],
-							["wp","wp","wp","wp","wp","wp","wp","wp"],
-							["-","-","-","-","-","-","-","-"],
-							["-","-","-","-","-","-","-","-"],
-							["-","-","-","-","-","-","-","-"],
-							["-","-","-","-","-","-","-","-"],
-							["bp","bp","bp","bp","bp","bp","bp","bp"],
-							["br","bn","bb","bq","bk","bb","bn","br"]]
 		# @board = [["wr","wn","wb","wq","wk","wb","wn","wr"],
+		# 					["wp","wp","wp","wp","wp","wp","wp","wp"],
 		# 					["-","-","-","-","-","-","-","-"],
 		# 					["-","-","-","-","-","-","-","-"],
 		# 					["-","-","-","-","-","-","-","-"],
 		# 					["-","-","-","-","-","-","-","-"],
-		# 					["-","-","-","-","-","-","-","-"],
-		# 					["-","-","-","-","-","-","-","-"],
+		# 					["bp","bp","bp","bp","bp","bp","bp","bp"],
 		# 					["br","bn","bb","bq","bk","bb","bn","br"]]
+		@board = [["wr","wn","wb","wq","wk","wb","wn","wr"],
+							["-","-","-","-","-","-","-","-"],
+							["-","-","-","-","-","-","-","-"],
+							["-","-","-","-","-","-","-","-"],
+							["-","-","-","-","-","-","-","-"],
+							["-","-","-","-","-","-","-","-"],
+							["-","-","-","-","-","-","-","-"],
+							["br","bn","bb","bq","bk","bb","bn","br"]]
 		@pieces = ChessPieces.new
 	end
 
@@ -41,9 +41,6 @@ class Board
 			puts string
 		end
 		puts "  a b c d e f g h"
-	end
-
-	def location(input,turn)
 	end
 
 	def input_translate(input)
@@ -130,7 +127,7 @@ class Board
 	end
 
 	def what_move(current)
-		while true#player_move == false || valid_piece_move == false
+		while true
 			player_move = move_input
 			if player_move == "back" 
 				return false 
@@ -168,4 +165,37 @@ class Board
 			end
 		end
 	end
+
+	def win
+		king_count = 0
+		winner = ""
+		@board.each do |row|
+			row.each do |space|
+				if space == "bk" 
+					king_count += 1
+					winner = "Black"
+				elsif space == "wk"
+					king_count += 1
+					winner = "White"
+				end
+			end
+		end
+		if king_count == 1
+			display
+			puts "#{winner} is the Winner!"
+			puts "Game Over"
+			return true
+		end
+		return false
+	end
 end
+
+
+
+
+
+
+
+
+
+

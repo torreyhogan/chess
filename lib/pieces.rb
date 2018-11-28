@@ -70,7 +70,7 @@ class ChessPieces
 	def pawn_move(piece,color,delta,current,pieces,target)
 		if target != '-' && color == "w"
 			pieces["p"]["moves"]["w"]["attack"].include?(delta)
-		elsif target != '-' && color = "b"
+		elsif target != '-' && color == "b"
 			pieces["p"]["moves"]["b"]["attack"].include?(delta)
 		elsif color == "w" && current[1] == 1 && target == '-'
 			pieces["p"]["moves"]["w"]["first"].include?(delta)
