@@ -6,7 +6,6 @@ class Game
 	def initialize
 		@player = nil
 		@board = nil
-		@turns = 0
 	end
 
 # switch player color or pick random player to start
@@ -27,7 +26,6 @@ class Game
 		@player == 'b' ? name = "Black" : name = "White"
 		puts "#{name}\'s turn"
 		@board.move(@player)
-		@turns += 1
 		# valid_entry = false
 		# until valid_entry
 		# 	piece_loc = gets.chomp
