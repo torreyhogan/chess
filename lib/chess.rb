@@ -1,12 +1,16 @@
 require_relative "board.rb"      
 require_relative "pieces.rb"
+require_relative "file_management.rb"
 
 class Game
 	attr_accessor :board, :player 
 	def initialize
 		@player = nil
-		@board = nil
+		@board = Board.new
 	end
+
+	#save and load game
+	
 
 # switch player color or pick random player to start
 	def switch_player
@@ -20,38 +24,27 @@ class Game
 
 	end
 
-
-
 	def player_turn
 		@player == 'b' ? name = "Black" : name = "White"
 		puts "#{name}\'s turn"
 		@board.move(@player)
-		# valid_entry = false
-		# until valid_entry
-		# 	piece_loc = gets.chomp
-		# 	valid_entry = @board.what_here(piece_loc,@player)
-		# end
-		# puts "thanks"
-		
-		# puts "Where would you like to "
-
 	end
 
 	def play
-		pieces = ChessPieces.new 
-		@board = Board.new
+		$save = false
+		# pieces = ChessPieces.new 
+	
 		@board.display
-		# all_pieces = pieces.all_pieces
-		until @board.win
+		switch_player
+		until @board.win || $save == true
 			switch_player
 			player_turn
 			@board.display
 		end
-
 	end
 
 
 end
 
-new_game = Game.new 
-new_game.play 
+files = Files.new
+files.start_up

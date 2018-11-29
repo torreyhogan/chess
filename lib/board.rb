@@ -57,7 +57,6 @@ class Board
 			return false
 		end
 		return [x,y]
-
 	end
 
 	def what_here(input,turn)
@@ -148,16 +147,19 @@ class Board
 			else 
 				puts "Enter valid move"
 			end
-			
 		end
 	end
 
 	def move(turn)
 		valid_entry = false
 		valid_move = false
-		while valid_entry == false || valid_move == false
+		while valid_entry == false || valid_move == false 
 			puts "Enter the location of the piece you would like to move"
 			piece_loc = gets.chomp
+			if piece_loc == "save"
+				$save = true
+				return nil
+			end
 			valid_entry = what_here(piece_loc,turn)
 			if valid_entry != false	
 				puts "Select where to move \'#{@board[valid_entry[1]][valid_entry[0]]}\' "
